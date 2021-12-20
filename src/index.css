@@ -1,0 +1,25 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { font-family: 'Raleway' }
+}  
+
+@layer utilities {
+  .container { @apply mx-auto }
+  .g-container { @apply container grid mx-auto; }
+  .f-container { @apply container flex mx-auto; }
+  .error { @apply text-xl rounded-lg justify-self-center w-96 bg-red-200 text-center px-4 py-2 mt-16 ring-4 ring-offset-4 ring-red-200/70; }
+  .loading { @apply rounded-lg justify-self-center w-96 bg-green-300 text-center px-4 py-2 mt-8 ring-4 ring-offset-4 ring-green-300/70; }
+  .recipe { @apply relative grid mb-2; }
+  .recipe-label { @apply absolute text-gray-400 text-sm mb-2  -top-7 left-0 peer-placeholder-shown:text-xl peer-placeholder-shown:top-2 peer-focus:text-gray-600 peer-focus:text-sm peer-focus:-top-7 transition-all; }
+  .recipe-input { @apply text-xl  placeholder-transparent py-1 bg-transparent border-b-2 border-b-gray-400 focus:outline-none focus:border-b-rose-600; }
+  .btn { @apply bg-rose-500 px-4 py-1 mt-6 rounded-md text-gray-400 hover:bg-rose-600 hover:text-white; }
+  .theme-selector { @apply h-6 w-6 rounded-full mr-2 last-of-type:mr-0; }
+  .dark { @apply bg-gray-900; }
+  .dark-heading { @apply text-gray-200; }
+} 
