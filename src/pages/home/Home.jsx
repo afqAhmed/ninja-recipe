@@ -1,16 +1,45 @@
+import { useEffect, useState } from 'react'
 import SingleRecipe from '../../components/SingleRecipe'
-import { useFetch } from '../../hooks/useFetch'
+
+import { db } from '../../firebase/config'
+import { collection, getDocs } from 'firebase/firestore'
 
 function Home() {
-  const url = 'http://localhost:3001/recipes'
-  const { data: recipes, isPending, error } = useFetch(url)
+  const [data, setData] = useState(null)
+  const [isPending, setIsPending] = useState(false)
+  const [error, setError] = useState(false)
+
+  
+  useEffect(() => {
+    setIsPending(true)
+    const recipesRef = collection(db, 'recipes') 
+
+
+    getDocs(recipesRef)
+      .then(snapshot => {
+        if(snapshot.empty){
+          setError('No recipes to load')
+          setIsPending(false)
+        } else {
+          let results = []
+          snapshot.docs.forEach(doc => {
+            results.push({id: doc.id, ...doc.data()})
+          })
+          setData(results)
+          setIsPending(false)
+        }
+      }).catch(err => {
+        setError(err.message)
+        setIsPending(false)
+      })
+  }, [])
 
   return (
     <div className='g-container justify-center'>
-      { error && <div className='error'>{ error }</div> }
-      { isPending && <div className='loading'>Loading...</div> }
-      <div className='g-container grid-cols-fit gap-20 mt-16'> 
-        { recipes && <SingleRecipe recipes={ recipes }/> } 
+      <div className='g-container grid-cols-fit gap-20 mt-16'>
+        { error && <div className='error'>{error}</div>}
+        { isPending && <div className='loading'>Loading....</div>}
+        { data && <SingleRecipe recipes={ data } /> }
       </div>
     </div>
   )

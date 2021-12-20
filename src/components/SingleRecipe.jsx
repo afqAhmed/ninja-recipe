@@ -19,7 +19,7 @@ function SingleRecipe({ recipes }) {
           >
             <h2 className='text-3xl font-bold'>{ recipe.title }</h2>
             <p className='text-gray-500 mt-0.5 mb-4'>{ recipe.cookingTime } to make</p>
-            <p className='text-gray-700 mb-8'>{ recipe.method.substring(0, 100) }....</p>
+            <p className='text-gray-700 mb-8'>{ recipe.method.substr(0, 100) }...</p>
             <div className='flex justify-center'>
               <Link to={`/recipes/${ recipe.id }`} className='bg-rose-500 text-gray-200 py-2 px-4 rounded-md text-lg shadow-lg shadow-pink-500/20 transition hover:bg-rose-600 hover:text-white hover:-translate-y-1'>Cook this</Link>
            </div>
