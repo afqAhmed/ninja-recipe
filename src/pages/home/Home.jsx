@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import SingleRecipe from '../../components/SingleRecipe'
 
 import { db } from '../../firebase/config'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 
 function Home() {
   const [data, setData] = useState(null)
@@ -12,11 +12,8 @@ function Home() {
   
   useEffect(() => {
     setIsPending(true)
-    const recipesRef = collection(db, 'recipes') 
-
-
-    getDocs(recipesRef)
-      .then(snapshot => {
+    const colRef = collection(db, 'recipes') 
+      onSnapshot(colRef, (snapshot) => {
         if(snapshot.empty){
           setError('No recipes to load')
           setIsPending(false)
@@ -28,9 +25,6 @@ function Home() {
           setData(results)
           setIsPending(false)
         }
-      }).catch(err => {
-        setError(err.message)
-        setIsPending(false)
       })
   }, [])
 
