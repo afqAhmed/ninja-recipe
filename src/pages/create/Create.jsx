@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import {  useNavigate } from 'react-router-dom'
-import { useFetch } from '../../hooks/useFetch'
 
+import { db } from '../../firebase/config'
+import { collection, addDoc } from 'firebase/firestore'
 
 function Create() {
   const [title, setTitle] = useState('')
@@ -10,15 +11,22 @@ function Create() {
   const [newIngredient, setNewIngredient] = useState('')
   const [ingredients, setIngredients] = useState([])
   const ingredientInput = useRef(null)
-  const { postData, data,  error } = useFetch('http://localhost:3001/recipes', 'POST')
   const navigate = useNavigate()
   
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    postData({ title, ingredients, method, cookingTime: cookingTime + ' minutes' })
+    const colRef = collection(db, 'recipes')
+    const doc = ({ title, ingredients, method, cookingTime: cookingTime + ' minutes' })
+
+    try{
+      await addDoc(colRef, doc)
+      navigate('/')
+    } catch(err) {
+      console.log(err.message)
+    }
   }
 
-  function handleIngredient(e) {
+  const handleIngredient = (e) => {
     e.preventDefault()
     const ingrd = newIngredient.trim()
     if (ingrd && !ingredients.includes(ingrd)) {
@@ -28,14 +36,7 @@ function Create() {
     ingredientInput.current.focus()
   }
 
-  useEffect(() => {
-    if(data) {
-      navigate('/')
-    }
-  }, [data])
-
-  return (
-    
+  return (   
     <div className='g-container justify-center mt-8'>
       <h1 className='text-4xl text-gray-600 font-semibold mb-12 text-center'>Add a new recipe</h1>
       <form className='w-[500px]' >

@@ -5,7 +5,7 @@ import { useTheme } from '../../hooks/useTheme'
 
 
 import { db } from '../../firebase/config'
-import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 
 function Recipe() {
   const { id } = useParams()
@@ -41,7 +41,7 @@ function Recipe() {
           <p className='text-gray-500 text-center mt-0.5 text-xl'>{recipe.cookingTime} to make</p>
           <ul className='flex text-gray-500 text-xl justify-center'>
             {recipe.ingredients.map((ing) => (
-              <li className='px-1 mt-1' key='ing'>
+              <li className='px-2 mt-1 bg-gray-200 rounded-full mr-1' key='ing'>
                 {ing}
               </li>
             ))}
