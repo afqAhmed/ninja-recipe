@@ -8,7 +8,7 @@ const firebaseConfig = {
   storageBucket: "food-recipes-8cf3c.appspot.com",
   messagingSenderId: "828615482594",
   appId: "1:828615482594:web:3e503f14f5e0bda6e612bb"
-};
+}
 
 const app = initializeApp(firebaseConfig)
 export const db = getFirestore(app)
