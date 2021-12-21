@@ -1,7 +1,15 @@
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { ThemeContext } from '../context/ThemeContext'
+import TrashIcon from '../assets/trashIcon.svg'
+import { db } from '../firebase/config'
+import { doc, deleteDoc } from 'firebase/firestore'
 
+
+const handleClick = id => {
+  const docRef = doc(db, 'recipes', id)
+  deleteDoc(docRef)  
+}
 
 function SingleRecipe({ recipes }) {
   const { color } = useContext(ThemeContext)
@@ -14,9 +22,14 @@ function SingleRecipe({ recipes }) {
       { recipes.map(recipe => (
           <div 
             key={recipe.id} 
-            className='bg-violet-300 px-6 py-8 shadow-lg shadow-violet-300/40 rounded-lg transition-all hover:rotate-3 hover:shadow-xl hover:shadow-violet-400/40'
+            className='relative bg-violet-300 px-6 py-8 shadow-lg shadow-violet-300/40 rounded-lg transition-all hover:rotate-3 hover:shadow-xl hover:shadow-violet-400/40'
             style={{ backgroundColor: color, boxShadow: `5px 5px 3px ${color}` }}
           >
+            <img 
+              onClick={() => handleClick(recipe.id) } 
+              src={TrashIcon} 
+              className='absolute top-3 right-3 cursor-pointer' 
+            />
             <h2 className='text-3xl font-bold'>{ recipe.title }</h2>
             <p className='text-gray-500 mt-0.5 mb-4'>{ recipe.cookingTime } to make</p>
             <p className='text-gray-700 mb-8'>{ recipe.method.substr(0, 100) }...</p>
