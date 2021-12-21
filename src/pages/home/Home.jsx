@@ -13,7 +13,7 @@ function Home() {
   useEffect(() => {
     setIsPending(true)
     const colRef = collection(db, 'recipes') 
-      onSnapshot(colRef, (snapshot) => {
+    const unsub = onSnapshot(colRef, snapshot => {
         if(snapshot.empty){
           setError('No recipes to load')
           setIsPending(false)
@@ -26,6 +26,7 @@ function Home() {
           setIsPending(false)
         }
       })
+      return () => unsub()
   }, [])
 
   return (
